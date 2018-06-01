@@ -13,4 +13,17 @@ FactoryBot.define do
       priority nil
     end
   end
+
+  factory :homework, class: Task do
+    name "complete homework"
+    #due_date {DateTime.now + 2.days}
+    priority 1
+  end
+
+  factory :email, class: Task do
+    #association :user
+    name "reply to Zack's email"
+    #due_date {DateTime.now}
+    priority 1
+  end
 end
