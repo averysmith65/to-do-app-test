@@ -21,7 +21,10 @@ RSpec.describe Task, type: :model do
     expect(task).not_to be_valid
   end
 
-  it 'is invalid without Due Date'
+  it 'is invalid without Due Date' do
+    task = build(:homework, due_date: nil)
+    expect(task).not_to be_valid
+  end
 
   it 'belongs to User'
 end

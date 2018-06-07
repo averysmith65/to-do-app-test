@@ -62,7 +62,11 @@ RSpec.describe TasksController, type: :controller do
     let(:valid_attributes) { attributes_for(:email, user_id: user.id)}
     let(:invalid_attributes) { attributes_for(:invalid_task) }
     context "with valid attributes" do
-      it 'persists new task'
+      it 'persists new task' do 
+        expect { 
+          post :create, params: { task: valid_attributes }
+        }.to change(Task, :count).by(1)
+      end
 
       it 'redirects to show page'
     end
