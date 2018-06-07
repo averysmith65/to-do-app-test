@@ -16,11 +16,26 @@ class TasksController < ApplicationController
 	def edit
 	end
 
-
-
 	def create
 		@task = Task.new(task_params)
-		@task.save
+		
+		respond_to do |format|
+			if @task.save
+				format.html { redirect_to task_path(@task) }
+			else
+				format.html { render :new }
+			end
+		end
+	end
+
+	def update
+		respond_to do |format|
+			if @task.update(task_params)
+				format.html { redirect_to task_path(@task) }
+			else
+				format.html { render :edit }
+			end
+		end
 	end
 
 	private

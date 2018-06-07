@@ -68,14 +68,59 @@ RSpec.describe TasksController, type: :controller do
         }.to change(Task, :count).by(1)
       end
 
-      it 'redirects to show page'
+      it 'redirects to show page' do
+        post :create, params: { task: valid_attributes }
+        expect(response).to redirect_to(assigns(:task))
+      end
     end
 
     context 'with invalid attributes' do
-      it 'does not persist task'
+      it 'does not persist task' do
+        expect{
+          post :create, params: {task: invalid_attributes}
+        }.not_to change(Task, :count)
+      end
 
-      it 're-renders :new template'
+      it 're-renders :new template' do 
+        post :create, params: { task: invalid_attributes }
+        expect(response).to render_template(:new)
+      end
     end
+  end
+
+  describe '#PATCH #update' do 
+    let(:task) { create(:email) }
+    let(:new_attributes) { attributes_for(:homework) }
+    let(:invalid_attributes) { attributes_for(:invalid_task) }
+
+    context 'with valid params' do
+      it 'updates the selected task' do
+        patch :update, params: { id: task.to_param, task: new_attributes }
+        task.reload
+        expect(task.name).to eq('complete homework')
+        expect(task.priority).to eq(1)
+      end
+
+      it 'redirects to the task' do
+      patch :update, params: { id: task.to_param, task: new_attributes }
+      task.reload
+      expect(response).to redirect_to(task)
+    end
+
+    context 'with invalid params' do
+      it 'does not update the task' do
+        patch :update, params: {id: task.to_param, task: invalid_attributes}
+        expect(assigns(:task)).to eq(task)
+      end
+
+      it 're-renders the edit template' do
+        patch :update, params: {id: task.to_param, task: invalid_attributes}
+        expect(response).to render_template(:edit)
+      end
+    end
+
+    end
+
   end
 
 end
