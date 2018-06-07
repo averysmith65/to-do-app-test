@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+	resources :tasks
+
   get 'tasks' => 'tasks#index'
   get 'tasks/new' => 'tasks#new'
   get 'tasks/1' => 'tasks#show', :id => "1"
